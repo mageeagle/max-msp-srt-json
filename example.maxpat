@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 188.0, 357.879856884479523, 79.0, 22.0 ],
+					"text" : "outputDir D:\\\\"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-92",
 					"maxclass" : "comment",
 					"numinlets" : 1,
@@ -382,7 +394,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 198.451430184841172, 357.879856884479523, 64.0, 22.0 ],
+					"patching_rect" : [ 275.451430184841172, 357.879856884479523, 64.0, 22.0 ],
 					"text" : "script start"
 				}
 
@@ -395,6 +407,14 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 48.25, 428.133189870119054, 122.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"autostart" : 0,
+						"defer" : 0,
+						"node_bin_path" : "",
+						"npm_bin_path" : "",
+						"watch" : 0
+					}
+,
 					"text" : "node.script srt-json.js"
 				}
 
@@ -463,7 +483,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-12", 0 ],
-					"midpoints" : [ 207.951430184841172, 403.506523377299288, 57.75, 403.506523377299288 ],
+					"midpoints" : [ 284.951430184841172, 403.506523377299288, 57.75, 403.506523377299288 ],
 					"source" : [ "obj-17", 0 ]
 				}
 
@@ -472,6 +492,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-19", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"midpoints" : [ 197.5, 403.506523377299288, 57.75, 403.506523377299288 ],
+					"source" : [ "obj-2", 0 ]
 				}
 
 			}
@@ -667,6 +695,13 @@
 				"bootpath" : "D:/Github/MaxMSP/aq-max-utilities/Messages",
 				"patcherrelativepath" : "../aq-max-utilities/Messages",
 				"type" : "JSON",
+				"implicit" : 1
+			}
+, 			{
+				"name" : "srt-json.js",
+				"bootpath" : "D:/Github/MaxMSP/max-msp-srt-json/patches",
+				"patcherrelativepath" : "./patches",
+				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{

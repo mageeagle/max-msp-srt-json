@@ -2,12 +2,17 @@
 const path = require('path');
 const Max = require('max-api');
 const fs = require('fs')
-
+let dir = ''
 
 // This will be printed directly to the Max console
 Max.post(`Loaded the ${path.basename(__filename)} script`);
 
 // Default Parameters
+
+Max.addHandler("outputDir", (string) => {
+    if (!string) return
+    dir = string
+})
 
 Max.addHandler("pipelineToSrt", (string, out) => {
     if (!string) return
@@ -67,7 +72,7 @@ const pipelineToSrt = (dict, out) => {
             str += num + '\r\n' + `${startTime} --> ${endTime}` + '\r\n' + obj.text + '\r\n' + '\r\n'
         })  
         // Write data
-        fs.writeFile(((out || 'output') + '.srt'), str, (err) => {
+        fs.writeFile((dir + (out || 'output') + '.srt'), str, (err) => {
         // In case of a error throw err.
         if (err) throw err
     })  
