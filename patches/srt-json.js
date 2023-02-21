@@ -1,23 +1,34 @@
 // SRT to JSON in Node4Max by Hou Lam Wu (Eagle) 2023
 const path = require('path');
 const Max = require('max-api');
-const fs = require('fs')
-let dir = ''
-
+const fs = require('fs/promises')
+let outDir = ''
+let inDir = ''
 // This will be printed directly to the Max console
 Max.post(`Loaded the ${path.basename(__filename)} script`);
 
 // Default Parameters
 
-Max.addHandler("outputDir", (string) => {
+Max.addHandler("inputDir", (string) => {
     if (!string) return
-    dir = string
+    inDir = string
 })
 
-Max.addHandler("pipelineToSrt", (string, out) => {
+Max.addHandler("outputDir", (string) => {
     if (!string) return
-    pipelineToSrt(string, out)
+    outDir = string
 })
+
+Max.addHandler("dictToSrt", (string, out) => {
+    if (!string) return
+    dictToSrt(string, out)
+})
+
+Max.addHandler("batchConvert", () => {
+    if (inDir === '') return
+    ls(inDir)
+})
+
 
 Max.addHandler("srtToLine", (...str) => {
     if (!str) return
@@ -38,6 +49,17 @@ Max.addHandler("srtToLine", (...str) => {
 //     subtitles = str
 // })
 
+async function ls(path) {
+    const dir = await fs.opendir(path)
+    for await (const dirent of dir) {
+        if (dirent.name.search('.json') >= 0)
+        fs.readFile(inDir + dirent.name)
+            .then((response) => JSON.parse(response))
+            .then((json) => pipelineToSrt(json, dirent.name.split('.json')[0]))
+            .then(console.log('File Converted: ' + dirent.name))
+    }
+  }
+  
 
 // Not exactly same timestamp format as below, as MaxMSP changes commas
 const timestampToMs = (str) => {
@@ -62,19 +84,22 @@ const secToTimestamp = (num) => {
     return `${t(hour)}:${t(min)}:${t(sec)},${msStr}`
 }
 
-const pipelineToSrt = (dict, out) => {
-    Max.getDict(dict).then((v) => {
-        let str = ''
-        v.chunks.forEach((obj, i) => {
-            const num = i + 1
-            const startTime = secToTimestamp(obj.timestamp[0])
-            const endTime = secToTimestamp(obj.timestamp[1])
-            str += num + '\r\n' + `${startTime} --> ${endTime}` + '\r\n' + obj.text + '\r\n' + '\r\n'
-        })  
-        // Write data
-        fs.writeFile((dir + (out || 'output') + '.srt'), str, (err) => {
+const pipelineToSrt = (v, out) => {
+    let str = ''
+    v.chunks.forEach((obj, i) => {
+        const num = i + 1
+        const startTime = secToTimestamp(obj.timestamp[0])
+        const endTime = secToTimestamp(obj.timestamp[1])
+        str += num + '\r\n' + `${startTime} --> ${endTime}` + '\r\n' + obj.text + '\r\n' + '\r\n'
+    })  
+    const filename = outDir + (out || 'output') + '.srt'
+    // Write data
+    fs.writeFile((filename), str).then(console.log('FIle written: ' + filename)).catch((err) => {
         // In case of a error throw err.
         if (err) throw err
     })  
-    })
+}
+
+const dictToSrt = (dict, out) => {
+    Max.getDict(dict).then(pipelineToSrt(dict, out))
 }
