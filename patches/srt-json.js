@@ -101,5 +101,5 @@ const pipelineToSrt = (v, out) => {
 }
 
 const dictToSrt = (dict, out) => {
-    Max.getDict(dict).then(pipelineToSrt(dict, out))
+    Max.getDict(dict).then((d) => pipelineToSrt(d, out))
 }
