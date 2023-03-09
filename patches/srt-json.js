@@ -52,11 +52,15 @@ Max.addHandler("srtToLine", (...str) => {
 async function ls(path) {
     const dir = await fs.opendir(path)
     for await (const dirent of dir) {
-        if (dirent.name.search('.json') >= 0)
-        fs.readFile(inDir + dirent.name)
+        if (dirent.isDirectory()) {
+            ls(path + dirent.name + '/' )
+        }
+        if (dirent.name.search('.json') >= 0) {
+            fs.readFile(path + dirent.name)
             .then((response) => JSON.parse(response))
-            .then((json) => pipelineToSrt(json, dirent.name.split('.json')[0]))
+            .then((json) => pipelineToSrt(json, dirent.name.split('.json')[0], path))
             .then(console.log('File Converted: ' + dirent.name))
+        }
     }
   }
   
@@ -84,7 +88,7 @@ const secToTimestamp = (num) => {
     return `${t(hour)}:${t(min)}:${t(sec)},${msStr}`
 }
 
-const pipelineToSrt = (v, out) => {
+const pipelineToSrt = (v, out, dir) => {
     let str = ''
     v.chunks.forEach((obj, i) => {
         const num = i + 1
@@ -92,7 +96,7 @@ const pipelineToSrt = (v, out) => {
         const endTime = secToTimestamp(obj.timestamp[1])
         str += num + '\r\n' + `${startTime} --> ${endTime}` + '\r\n' + obj.text + '\r\n' + '\r\n'
     })  
-    const filename = outDir + (out || 'output') + '.srt'
+    const filename = dir + (out || 'output') + '.srt'
     // Write data
     fs.writeFile((filename), str).then(console.log('FIle written: ' + filename)).catch((err) => {
         // In case of a error throw err.
@@ -101,5 +105,5 @@ const pipelineToSrt = (v, out) => {
 }
 
 const dictToSrt = (dict, out) => {
-    Max.getDict(dict).then((d) => pipelineToSrt(d, out))
+    Max.getDict(dict).then((d) => pipelineToSrt(d, out, outDir))
 }
