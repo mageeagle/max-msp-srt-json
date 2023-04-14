@@ -6,6 +6,11 @@ function list () {
     out.push(timestampToMs(str[0].split(' --> ')[0]))
     str.forEach(function (line, i) {
         const startEnd = line.split(' --> ')
+        if (i > 0) {
+            const lastStartEnd = str[i - 1].split(' --> ')
+            out.push(i + 1)
+            out.push(timestampToMs(startEnd[0]) - timestampToMs(lastStartEnd[1]))
+        }
         out.push(i + 1)
         out.push(timestampToMs(startEnd[1]) - timestampToMs(startEnd[0]))
     })

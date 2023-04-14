@@ -57,7 +57,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 312.451430184841172, 287.507681528329897, 150.0, 62.0 ],
+					"patching_rect" : [ 312.451430184841172, 287.507681528329897, 153.0, 62.0 ],
 					"text" : "For BatchConversion, specify input directory and output directory, and press batchConvert"
 				}
 
@@ -69,9 +69,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 312.451430184841172, 357.879856884479523, 98.0, 22.0 ],
-					"presentation_linecount" : 2,
-					"text" : "inputDir D:\\\\input"
+					"patching_rect" : [ 312.451430184841172, 374.879856884479523, 276.0, 22.0 ],
+					"text" : "inputDir G:\\\\Session_bounce_for_Karen_Monkey\\\\"
 				}
 
 			}
@@ -447,6 +446,8 @@
 					"saved_object_attributes" : 					{
 						"autostart" : 0,
 						"defer" : 0,
+						"node_bin_path" : "",
+						"npm_bin_path" : "",
 						"watch" : 0
 					}
 ,
